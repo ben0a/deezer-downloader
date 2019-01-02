@@ -26,9 +26,6 @@ def validate_schema(*parameters_to_check):
             if "music_id" in j.keys():
                 if not isinstance(j['music_id'], int):
                     return jsonify({"Error": "music_id must be a digit"}),400
-            if "add" in j.keys():
-                if not isinstance(j['add'], bool):
-                    return jsonify({"Error": "all must be a boolean"}),400
             if "query" in j.keys():
                 if j['query'] == "":
                     return jsonify({"Error": "query is empty"}),400
@@ -67,7 +64,7 @@ def list_album():
 
 
 @app.route('/api/v1/deezer/download', methods=['POST'])
-@validate_schema("type", "music_id", "add")
+@validate_schema("type", "music_id")
 def download():
     """
     downloads music from the Deezer library to the dir specified in settings.py
@@ -75,13 +72,12 @@ def download():
     para: 
         type: album|track
         music_id: id of the album or track
-        add: true|false (add to mpd playlist)
     """
-    add, music_id, type = request.get_json(force=True).values()
+    music_id, type = request.get_json(force=True).values()
     if type == "track":
-        t = Thread(target=my_download_song, args=(music_id, update_mpd, add))
+        t = Thread(target=my_download_song, args=(music_id, update_mpd, False))
     else:
-        t = Thread(target=my_download_album, args=(music_id, update_mpd, add))
+        t = Thread(target=my_download_album, args=(music_id, update_mpd, False, True))
     t.start()
     return jsonify({"state": "have fun"})
 

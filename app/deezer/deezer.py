@@ -1119,14 +1119,13 @@ totalSongs = 0
 import re
 def sorted_nicely( l ):
     """ Sorts the given iterable in the way that is expected.
- 
     Required arguments:
     l -- The iterable to be sorted.
- 
     """
     convert = lambda text: int(text) if text.isdigit() else text
     alphanum_key = lambda key: [convert(c) for c in re.split('([0-9]+)', key)]
     return sorted(l, key = alphanum_key)
+
 
 
 import mpd
@@ -1192,16 +1191,26 @@ def create_zipfile(song_location):
     zip_name = song_location[len_prefix_to_remove:] # album name/song name 
     zip_name = zip_name.split("/")[0] + ".zip" 
     zip_abs = os.path.join(zip_dir, zip_name)
+    if os.path.exists(zip_abs):
+        print("zipfile already there")
+        return
     album_dir = os.path.join(music_dir, "/".join(song_location.split("/")[:-1]))
     cmd = "zip -r {} {}".format(shellquote(zip_abs), shellquote(album_dir))
+    print(cmd)
     os.system(cmd)
+    cmd = "rm -rf {}".format(shellquote(album_dir))
+    print(cmd)
+    os.system(cmd)
+
 
 
 def my_download_album(album_id, update_mpd, add_to_playlist, create_zip=False):
     url = "https://www.deezer.com/de/album/{}".format(album_id)
     song_locations = []
     for song in parse_deezer_page(url):
-        song_locations.append(download(song, album=True))
+        song_location = download(song, album=True)
+        if song_location:
+            song_locations.append(song_location)
     if update_mpd:
         mpd_update(set(song_locations), add_to_playlist)
     if create_zip == True:
