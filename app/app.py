@@ -82,11 +82,11 @@ def download():
     return jsonify({"state": "have fun"})
 
 
-@app.route('/static/<path:filename>')
-def serve_static(filename):
-    root_dir = os.path.dirname(os.getcwd())
-    return send_from_directory(os.path.join(root_dir, 'static'), filename)    
-
+#@app.route('/static/<path:filename>')
+#def serve_static(filename):
+#    root_dir = os.path.dirname(os.getcwd())
+#    return send_from_directory(os.path.join(root_dir, 'static'), filename)    
+#
 
 @app.route("/")
 def index():
