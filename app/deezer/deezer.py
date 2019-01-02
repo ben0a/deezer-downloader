@@ -11,7 +11,7 @@ from os.path import basename
 
 import arrow
 import requests
-from settings import download_dir, music_dir
+from settings import download_dir, music_dir, zip_dir
 deezer = DeezerLogin()
 """
   Author:   --<>
@@ -55,7 +55,7 @@ from mutagen.mp3 import MP3
 from mutagen.id3 import ID3, APIC, error
 from decimal import Decimal
 from colorama import Fore, Back, Style, init
-from tkFileDialog import askopenfilename as openfile
+#from tkFileDialog import askopenfilename as openfile
 import pyglet
 import feedparser
 import unicodedata
