@@ -1,3 +1,11 @@
+
+# this is the download_as_zip branch
+1. the music will be downloaded  
+2. a zip will be created (enable direcotriy listing for this directory; it is specified in settings.py)  
+3. the music dir (mp3s) will be deleted. the zip stays  
+----------------------------
+
+
 # Simple web app writting in flask for downloading songs/albums from deezer.com
 - a valid Deezer login credentials are required (free plan)
 
