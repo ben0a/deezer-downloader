@@ -79,6 +79,8 @@ pyglet.have_avbin=True
 host_stream_cdn = "http://e-cdn-proxy-%s.deezer.com/mobile/1"
 setting_domain_img = "http://cdn-images.deezer.com/images"
 
+if not os.path.exists(zip_dir):
+    os.makedirs(zip_dir, exist_ok=True)
 
 def enabletor():
     import socks
@@ -1181,16 +1183,31 @@ def my_download_from_json_file():
         download(song)
 
 
+def shellquote(s):
+        return "'" + s.replace("'", "'\\''") + "'"
 
 
-def my_download_album(album_id, update_mpd, add_to_playlist):
+def create_zipfile(song_location):
+    len_prefix_to_remove = len(download_dir[len(music_dir):])
+    zip_name = song_location[len_prefix_to_remove:] # album name/song name 
+    zip_name = zip_name.split("/")[0] + ".zip" 
+    zip_abs = os.path.join(zip_dir, zip_name)
+    album_dir = os.path.join(music_dir, "/".join(song_location.split("/")[:-1]))
+    cmd = "zip -r {} {}".format(shellquote(zip_abs), shellquote(album_dir))
+    os.system(cmd)
+
+
+def my_download_album(album_id, update_mpd, add_to_playlist, create_zip=False):
     url = "https://www.deezer.com/de/album/{}".format(album_id)
     song_locations = []
     for song in parse_deezer_page(url):
         song_locations.append(download(song, album=True))
     if update_mpd:
         mpd_update(set(song_locations), add_to_playlist)
+    if create_zip == True:
+        create_zipfile(song_locations[0])
     return sorted_nicely(set(song_locations))
+
 
 def my_download_song(track_id, update_mpd, add_to_playlist):
     url = "https://www.deezer.com/de/track/{}".format(track_id)
