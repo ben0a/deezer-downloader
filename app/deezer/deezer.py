@@ -80,7 +80,7 @@ host_stream_cdn = "http://e-cdn-proxy-%s.deezer.com/mobile/1"
 setting_domain_img = "http://cdn-images.deezer.com/images"
 
 if not os.path.exists(zip_dir):
-    os.makedirs(zip_dir, exist_ok=True)
+    os.makedirs(zip_dir)
 
 def enabletor():
     import socks
@@ -1194,11 +1194,12 @@ def create_zipfile(song_location):
     if os.path.exists(zip_abs):
         print("zipfile already there")
         return
-    album_dir = os.path.join(music_dir, "/".join(song_location.split("/")[:-1]))
-    cmd = "zip -r {} {}".format(shellquote(zip_abs), shellquote(album_dir))
+    album_dir = song_location.split("/")[-2]
+    cmd = "cd {}; zip -r {} {}".format(download_dir, shellquote(zip_abs), shellquote(album_dir))
     print(cmd)
     os.system(cmd)
-    cmd = "rm -rf {}".format(shellquote(album_dir))
+    album_dir_full = os.path.join(music_dir, "/".join(song_location.split("/")[:-1]))
+    cmd = "rm -rf {}".format(shellquote(album_dir_full))
     print(cmd)
     os.system(cmd)
 
