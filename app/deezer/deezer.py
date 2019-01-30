@@ -1209,27 +1209,32 @@ def create_zipfile(song_location):
 
 
 
-def my_download_album(album_id, update_mpd, add_to_playlist, create_zip=False):
+def my_download_album(album_id, create_zip=False):
     url = "https://www.deezer.com/de/album/{}".format(album_id)
     song_locations = []
     for song in parse_deezer_page(url):
         song_location = download(song, album=True)
         if song_location:
             song_locations.append(song_location)
-    if update_mpd:
-        mpd_update(set(song_locations), add_to_playlist)
     if create_zip == True:
         create_zipfile(song_locations[0])
     return sorted_nicely(set(song_locations))
 
+def move_single_song(song_location):
+    src = os.path.join(music_dir, song_location)
+    dest = os.path.join(zip_dir, os.path.basename(song_location))
+    cmd = "mv {} {}".format(shellquote(src), shellquote(dest))
+    #print(cmd)
+    os.system(cmd)
 
-def my_download_song(track_id, update_mpd, add_to_playlist):
+
+
+def my_download_song(track_id):
     url = "https://www.deezer.com/de/track/{}".format(track_id)
     song = list(parse_deezer_page(url))[0]
-    print("Downloading song {}".format(track_id))
+    #print("Downloading song {}".format(track_id))
     song_location = download(song, album=False)
-    if update_mpd:
-        mpd_update([song_location], add_to_playlist)
+    move_single_song(song_location)
 
 if __name__ == '__main__':
     pass
