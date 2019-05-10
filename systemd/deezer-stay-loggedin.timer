@@ -3,7 +3,7 @@ Description=Extend Deezer login session
 
 [Timer]
 OnCalendar=00/1:00
-Persistant=true
+Persistent=true
 
 [Install]
 WantedBy=timers.target
