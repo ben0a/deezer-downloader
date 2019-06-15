@@ -1,8 +1,5 @@
 from credentials import sid
-music_dir = "/home/deezer/deezer-downloader/music"
-download_dir = "/home/deezer/deezer-downloader/music/deezer"
-zip_dir = "/home/deezer/deezer-downloader/music/downloads"
+music_dir = "/home/kmille/Musik"
+download_dir = "/home/kmille/Musik/deezer"
+zip_dir = "/home/kmille/Musik/deezer"
 update_mpd = False
-
-
-

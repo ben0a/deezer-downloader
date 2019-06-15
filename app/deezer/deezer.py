@@ -640,6 +640,6 @@ def my_download_song(track_id):
 
 
 if __name__ == '__main__':
-    my_download_song("917265")
-    my_download_album("93769922", create_zip=True)
-    #my_download_playlist("5434472702")
+    #my_download_song("917265")
+    #my_download_album("93769922", create_zip=True)
+    my_download_playlist("6062271904")
